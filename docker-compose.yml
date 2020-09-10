@@ -1,26 +1,20 @@
-version: '3.7'
-services: 
-  mysqltest:
-    image: mysql
-    ports:
-      - "3306:3306"
-    expose:
-      - "3306"
-    environment:
-      - MYSQL_USER=root
-      - MYSQL_DATABASE=db_example
-      - MYSQL_ROOT_PASSWORD=root
-  
-  capgemini:
-    image: aw/capgemini-branch:0.0.1-SNAPSHOT
-    ports:
-      - "8181:8181"
-    expose:
-      - "8181"
-    environment:
-      - MYSQL_HOST=mysqltest
-      - MYSQL_USER=root
-    links:
-      - mysqltest  
-    depends_on:
-      - mysqltest
+version: '3.8'
+services:
+  mysql:
+    image: mysql:latest
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db_blog
+      - MYSQL_USER=root
+    ports: 
+      - 3306:3306
+  blog:
+    image: aw/capgemini-branch:0.0.1-SNAPSHOT
+    ports: 
+      - 8181:8181
+    environment: 
+      - MYSQL_HOST=mysql
+    links:
+      - mysql
+    depends_on:
+      - mysql
